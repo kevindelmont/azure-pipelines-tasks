@@ -102,6 +102,8 @@ if (argv.task) {
     taskList = fileToJson(makeOptionsPath).tasks;
 }
 
+const taskBuildMode = argv.mode;
+
 // set the runner options. should either be empty or a comma delimited list of test runners.
 // for example: ts OR ts,ps
 //
@@ -405,7 +407,7 @@ async function buildTaskAsync(taskName, taskListLength, nodeVersion) {
 
     // build Node task
     if (shouldBuildNode) {
-        buildNodeTask(taskPath, outDir);
+        buildNodeTask(taskPath, outDir, taskBuildMode);
     }
 
     // remove the hashes for the common packages, they change every build
