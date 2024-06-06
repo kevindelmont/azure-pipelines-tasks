@@ -734,6 +734,21 @@ var fileToJson = function (file) {
 }
 exports.fileToJson = fileToJson;
 
+// TODO: remove comments and then read
+// todo: how to preserve the original user's launch.json with the original comments in it?
+var fileToJsonRemovedComments = function (file) {
+    const fileString = fs.readFileSync(file).toString();
+
+    const outputString = fileString
+        .split('\n')
+        .filter(line => !line.trim().startsWith('//'))
+        .join('\n');
+
+    const jsonFromFile = JSON.parse(outputString);
+    return jsonFromFile;
+}
+exports.fileToJsonRemovedComments = fileToJsonRemovedComments;
+
 var createResjson = function (task, taskPath) {
     var resources = {};
     if (task.hasOwnProperty('friendlyName')) {
