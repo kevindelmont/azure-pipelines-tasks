@@ -201,6 +201,25 @@ CLI.gendebugconfig = function() {
     if (!pathExists(vscodePath)) {
         mkdir(vscodePath);
     }
+
+    const addConfig = (taskDef, nodeVersion) => {
+        const node16PatchVersion = taskDef.version.Patch;
+        const node20PatchVersion = taskDef.version.Patch + 1;
+
+        const patchVersion = nodeVersion === 20 ? node20PatchVersion : node16PatchVersion;
+
+        configsToAdd.push({
+            "name": `Debug ${taskDef.name}V${taskDef.version.Major} Node ${nodeVersion}`,
+            "type": "node",
+            "request": "attach",
+            "address": "localhost",
+            "port": 9229,
+            "autoAttachChildProcesses": true,
+            "skipFiles": ["<node_internals>/**"],
+            "sourceMaps": true,
+            "remoteRoot": `${agentPath}/_work/_tasks/${taskDef.name}_${taskDef.id.toLowerCase()}/${taskDef.version.Major}.${taskDef.version.Minor}.${patchVersion}`
+        });
+    };
     
     const configsToAdd = [];
     taskList.forEach(function(taskName) {
@@ -212,17 +231,8 @@ CLI.gendebugconfig = function() {
             var taskDef = fileToJson(taskJsonPath);
             validateTask(taskDef);
 
-            configsToAdd.push({
-                "name": `Debug ${taskDef.name}V${taskDef.version.Major}`,
-                "type": "node",
-                "request": "attach",
-                "address": "localhost",
-                "port": 9229,
-                "autoAttachChildProcesses": true,
-                "skipFiles": ["<node_internals>/**"],
-                "sourceMaps": true,
-                "remoteRoot": `${agentPath}/_work/_tasks/${taskDef.name}_${taskDef.id.toLowerCase()}/${taskDef.version.Major}.${taskDef.version.Minor}.${taskDef.version.Patch}`
-            });
+            addConfig(taskDef, 16);
+            addConfig(taskDef, 20);
         }
     });
 
