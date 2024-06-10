@@ -20,7 +20,7 @@
   "version": {
     "Major": 2,
     "Minor": 241,
-    "Patch": 0
+    "Patch": 2
   },
   "minimumAgentVersion": "2.0.0",
   "instanceNameFormat": "Azure CLI $(scriptPath)",
@@ -214,7 +214,7 @@
     "ProxyConfig": "az tool is configured to use %s as proxy server"
   },
   "_buildConfigMapping": {
-    "Default": "2.241.0",
-    "Node20_229_2": "2.241.1"
+    "Default": "2.241.2",
+    "Node20_229_2": "2.241.3"
   }
 }
